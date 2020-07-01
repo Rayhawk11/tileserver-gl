@@ -1,6 +1,7 @@
-FROM registry.access.redhat.com/ubi8
+FROM registry.access.redhat.com/ubi8/nodejs-10
 MAINTAINER Petr Sloup <petr.sloup@klokantech.com>
 
+USER root
 ENV NODE_ENV="production"
 VOLUME /data
 WORKDIR /data
@@ -24,7 +25,6 @@ gpgcheck=0' > /etc/yum.repos.d/centos.repo
 
 RUN dnf -y install \
     curl \
-    nodejs \
     unzip \
     python2 \
     pkgconf-pkg-config \
@@ -43,4 +43,4 @@ RUN dnf -y install \
 RUN ln -s /usr/bin/python2 /usr/bin/python
 RUN mkdir -p /usr/src/app
 COPY / /usr/src/app
-RUN cd /usr/src/app && npm install --production
+RUN cd /usr/src/app && npm install --production --unsafe-perm
